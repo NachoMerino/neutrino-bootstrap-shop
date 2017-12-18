@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "neutrino build",
-    "start": "neutrino start"
+    "start": "neutrino start",
+    "start-express": "node src/server/app.js",
+    "start-express-dev": "nodemon src/server/app.js"
   },
   "repository": {
     "type": "git",
@@ -27,8 +29,10 @@
   },
   "dependencies": {
     "bootstrap": "^4.0.0-beta.2",
+    "express": "^4.16.2",
     "jquery": "^3.2.1",
     "node-sass": "^4.7.2",
+    "path": "^0.12.7",
     "popper.js": "^1.13.0",
     "webpack": "^2.7.0"
   }
