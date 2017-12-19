@@ -16,7 +16,8 @@ $(() => {
     $('.shopping-cart').toggle('slow', (() => {
     }));
   }));
-  //  read categories
+
+  // read categories
   $.ajax('http://localhost:9090/api/categories')
     .done((categories) => {
       //  populate carousel with categories
@@ -36,8 +37,7 @@ $(() => {
     .fail((xhr, status, error) => {
       $('#root').append(`<div>Ajax Error categories: ${error}</div>`);
     });
-
-  //  ajax req and append products grid
+  // ajax req and append products grid
   $.ajax('http://localhost:9090/api/products')
     .done((products) => {
       //  append products-grid after carousel
@@ -60,6 +60,13 @@ $(() => {
     //  or fail trying
     .fail((xhr, status, error) => {
       $('#root').append(`<div>Ajax Error products: ${error}</div>`);
+    });
+  // randomly select one user from the database at the beginning,
+  // so that we have one user for ordering and checkout
+  $.ajax('http://localhost:9090/api/customers')
+    .done((customers) => {
+      const user = JSON.stringify(customers[Math.floor(Math.floor(customers.length)) - 1]);
+      localStorage.setItem('user', user);
     });
   // End
 });
