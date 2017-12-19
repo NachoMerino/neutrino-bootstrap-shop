@@ -5,12 +5,14 @@ const Router = express.Router;
 const app = express();
 const cors = require('cors');
 const mysql = require('mysql');
+const bodyParser = require('body-parser');
 
 const frontendDirectoryPath = path.resolve(__dirname, './../static');
 
 console.log('static resource at: ' + frontendDirectoryPath);
 app.use(express.static(frontendDirectoryPath));
 app.use(cors());
+app.use(bodyParser());
 
 
 var con = mysql.createConnection({
@@ -39,6 +41,16 @@ apiRouter.get('/products', (req, res) => {
 	});
 });
 
+apiRouter.get('/products', (req, res) => {
+	con.query('select * from products', function(err, rows) {
+		if(err)
+			throw res.json( err );
+
+		console.log( rows );
+		res.json( rows );
+	});
+});
+
 apiRouter.get('/categories', (req, res) => {
 	con.query('select * from product_categories', function(err, rows) {
 		if(err)
@@ -51,6 +63,16 @@ apiRouter.get('/categories', (req, res) => {
 
 apiRouter.get('/customers', function(req, res) {
 	con.query('select * from customers where active = 1', function(err, rows) {
+		if(err)
+			throw res.json( err );
+
+		console.log( rows );
+		res.json( rows );
+	});
+});
+
+apiRouter.get('/payment_methods', function(req, res) {
+	con.query('select * from payment_method', function(err, rows) {
 		if(err)
 			throw res.json( err );
 
@@ -102,6 +124,26 @@ apiRouter.post('/user', function(req, res) {
 					}
 				);
 			}
+		});
+});
+
+apiRouter.post('/order', function(req, res) {
+	/* postpone to january ...
+	con.query('insert into orders (customer_id, payment_id, created, paid) values (?, ?, now(), NULL)', [req.body.customerid, req.body.payment_id], function(err, rows) {
+
+		const newOrderId = rows.insertId;
+		var sql = 'insert into order_details () values ';
+
+		res.json(rows);
+	});
+	*/
+
+	fs.writeFile(path.resolve(__dirname, './../orders/orders'+Date.now()+'.txt'), JSON.stringify(req.body),
+		(err) => {
+			if(err) 
+				res.json({ error: err });
+
+			res.json({success:'order saved'});
 		});
 });
 
