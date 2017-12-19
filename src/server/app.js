@@ -3,12 +3,23 @@ const fs = require('fs');
 const path = require('path');
 const Router = express.Router;
 const app = express();
+const cors = require('cors');
+const mysql = require('mysql');
 
 const frontendDirectoryPath = path.resolve(__dirname, './../static');
 
 console.log('static resource at: ' + frontendDirectoryPath);
-
 app.use(express.static(frontendDirectoryPath));
+app.use(cors());
+
+
+var con = mysql.createConnection({
+	host: 'localhost',
+	user: 'root',
+	password: '',
+	database: 'online_shop'
+});
+
 
 // always want to have /api in the beginning
 const apiRouter = new Router();
@@ -19,23 +30,23 @@ apiRouter.get('/', (req, res) => {
 });
 
 apiRouter.get('/products', (req, res) => {
-	fs.readFile(frontendDirectoryPath + '/products.json', 
-		(err, content) => {
-			if(err) throw err;
+	con.query('select * from products', function(err, rows) {
+		if(err)
+			throw res.json( err );
 
-			res.type('json');
-			res.send(content);
-		});
+		console.log( rows );
+		res.json( rows );
+	});
 });
 
 apiRouter.get('/categories', (req, res) => {
-	fs.readFile(frontendDirectoryPath + '/categories.json', 
-		(err, content) => {
-			if(err) throw err;
+	con.query('select * from product_categories', function(err, rows) {
+		if(err)
+			throw res.json( err );
 
-			res.type('json');
-			res.send(content);
-		});
+		console.log( rows );
+		res.json( rows );
+	});
 });
 
 
