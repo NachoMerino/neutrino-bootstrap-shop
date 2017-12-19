@@ -65,7 +65,7 @@ $(() => {
   // so that we have one user for ordering and checkout
   $.ajax('http://localhost:9090/api/customers')
     .done((customers) => {
-      const user = JSON.stringify(customers[Math.floor(Math.floor(customers.length)) - 1]);
+      const user = JSON.stringify(customers[Math.floor(Math.random(customers.length))]);
       localStorage.setItem('user', user);
     });
   // End
