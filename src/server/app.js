@@ -193,7 +193,12 @@ apiRouter.delete('/user/:userid', function(req, res) {
 	});
 });
 
-app.listen( 9090, (err) => {
-	if(err) throw err;
-	console.log('Server started on port 9090');
+// avoid starting server if the connection to the DB cannot be established
+con.connect(function (err) {
+	if (err) throw err;
+
+	app.listen( 9090, (err) => {
+		if(err) throw err;
+		console.log('Server started on port 9090');
+	});
 });
