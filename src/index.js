@@ -44,9 +44,19 @@ $(() => {
 
   // the checkout button is located in the navbar too
   $('.checkout-proceed').click(() => {
+    // create a jQuery object filled with the checkoutTemplate
+    const $checkout = $(checkoutTemplate);
+    // get the user information from the local storage
+    const user = JSON.parse(localStorage.getItem('user'));
+    // change the field values accordingly
+    $checkout.find('[name="user-name"]').val(`${user.firstname} ${user.lastname}`);
+    $checkout.find('[name="user-street"]').val(user.street);
+    $checkout.find('[name="user-city"]').val(`${user.postal} ${user.city}`);
+
     $pageContent
       .empty()
-      .append(checkoutTemplate);
+      .append($checkout);
+
     // close the cart widget
     $('.shopping-cart').hide('slow');
   });
