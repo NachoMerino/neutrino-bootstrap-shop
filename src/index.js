@@ -34,11 +34,19 @@ $(() => {
   }
 
   // the #cart element is located in the navbar
+  // (which has been add above)
   $('#cart').click(((e) => {
     e.preventDefault();
     $('.shopping-cart').toggle('slow', (() => {
     }));
   }));
+
+  // the checkout button is located in the navbar too
+  $('.checkout-proceed').click(() => {
+    $pageContent
+      .empty()
+      .append('something');
+  });
 
   // we will trick the $pageContent to add a padding top
   // equivalent to the navbar outer height
