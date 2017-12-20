@@ -47,6 +47,8 @@ $(() => {
     $pageContent
       .empty()
       .append(checkoutTemplate);
+    // close the cart widget
+    $('.shopping-cart').hide('slow');
   });
 
   // we will trick the $pageContent to add a padding top
