@@ -13,12 +13,21 @@ app.use(express.static(frontendDirectoryPath));
 app.use(cors());
 app.use(express.json());
 
+// avoid hardcoded DB connection information at ALL COSTS!
+// use the following command to start your server:
+// MYSQL_PASSWORD=P455w0rd MYSQL_USER=root MYSQL_DB=x_shop npm run start-express-dev
+const {
+	MYSQL_PASSWORD = '',
+	MYSQL_USER = 'root',
+	MYSQL_DB = 'online_shop',
+} = process.env;
 
+console.info('MYSQL: user "%s", db "%s", pass length %s', MYSQL_USER, MYSQL_DB, MYSQL_PASSWORD.length);
 var con = mysql.createConnection({
 	host: 'localhost',
-	user: 'root',
-	password: '',
-	database: 'online_shop'
+	user: MYSQL_USER,
+	password: MYSQL_PASSWORD,
+	database: MYSQL_DB
 });
 
 
