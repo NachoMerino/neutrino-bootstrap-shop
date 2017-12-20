@@ -40,6 +40,11 @@ $(() => {
     }));
   }));
 
+  // we will trick the $pageContent to add a padding top
+  // equivalent to the navbar outer height
+  // (don't forget to remove styles which were supposed to do that in your SCSS)
+  $pageContent.css('padding-top', $('.navbar').outerHeight());
+
   // read categories
   $.ajax('http://localhost:9090/api/categories')
     .done((categories) => {
