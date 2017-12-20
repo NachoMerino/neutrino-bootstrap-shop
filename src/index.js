@@ -13,9 +13,7 @@ $(() => {
   //  we will be able to put the content of our pages
   const $pageContent = $('<div class="page-content"></div>');
 
-  // instead of calling jQuery several time ($('#root')),
-  // we keep a reference of the #root
-  const $root = $('#root')
+  $('#root')
     // we keep that outside of the page content
     // because when we click on product details
     // we replace its content
