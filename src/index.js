@@ -53,9 +53,39 @@ $(() => {
     $checkout.find('[name="user-street"]').val(user.street);
     $checkout.find('[name="user-city"]').val(`${user.postal} ${user.city}`);
 
+    // we put the $checkout in the page
+    // (a text "Payment methods are loading" is visible)
     $pageContent
       .empty()
       .append($checkout);
+
+    $.ajax('//localhost:9090/api/payment_methods')
+      .done((data) => {
+        // we clear the .payment-methods (in which the loading text is)
+        // and keep a reference ($paymentMethods) for later access
+        const $paymentMethods = $checkout
+          .find('.payment-methods')
+          .empty();
+
+        // for each payment methods returned by the API
+        data.forEach((paymentMethod) => {
+          // we create a jQuery object
+          const $paymentMethod = $(paymentMethodRadioTemplate);
+          // in which we alterate the wanted attributes...
+          $paymentMethod.find('input').attr('value', paymentMethod.id);
+          // ...and texts
+          // It's important to do the ".find()" on the smallest set possible
+          // if we have used .find() on $checkout,
+          // it would have unwanted side effects (because the $checkout has several 'span's)
+          $paymentMethod.find('span').text(paymentMethod.name);
+          // finally we append the payment method to its container
+          $paymentMethods.append($paymentMethod);
+        });
+      })
+      // we could also use the handleAJAXError here
+      .fail((xhr, status, error) => {
+        $paymentMethods.text(error.message);
+      });
 
     // close the cart widget
     $('.shopping-cart').hide('slow');
