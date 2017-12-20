@@ -5,14 +5,13 @@ const Router = express.Router;
 const app = express();
 const cors = require('cors');
 const mysql = require('mysql');
-const bodyParser = require('body-parser');
 
 const frontendDirectoryPath = path.resolve(__dirname, './../static');
 
 console.log('static resource at: ' + frontendDirectoryPath);
 app.use(express.static(frontendDirectoryPath));
 app.use(cors());
-app.use(bodyParser());
+app.use(express.json());
 
 
 var con = mysql.createConnection({
