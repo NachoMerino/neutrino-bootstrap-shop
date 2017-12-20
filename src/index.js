@@ -28,6 +28,13 @@ $(() => {
     // we will modify its own content later
     .append($pageContent);
 
+  // in order to handle errors in consistent manner
+  function handleAJAXError(xhr, status, error) {
+    $pageContent
+      .empty()
+      .append(`<div>Ajax Error categories: ${error}</div>`);
+  }
+
   // the #cart element is located in the navbar
   $('#cart').click(((e) => {
     e.preventDefault();
@@ -53,9 +60,7 @@ $(() => {
       });
     })
     //  or fail trying
-    .fail((xhr, status, error) => {
-      $root.append(`<div>Ajax Error categories: ${error}</div>`);
-    });
+    .fail(handleAJAXError);
 
   // ajax req and append products grid
   $.ajax('http://localhost:9090/api/products')
@@ -81,9 +86,7 @@ $(() => {
       });
     })
     //  or fail trying
-    .fail((xhr, status, error) => {
-      $root.append(`<div>Ajax Error products: ${error}</div>`);
-    });
+    .fail(handleAJAXError);
   // randomly select one user from the database at the beginning,
   // so that we have one user for ordering and checkout
   $.ajax('http://localhost:9090/api/customers')
