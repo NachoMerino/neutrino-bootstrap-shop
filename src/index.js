@@ -7,10 +7,28 @@ import modalTemplate from './templates/modal.html';
 import mkCarousel from './carousel';
 import refreshProducts from './products';
 
-//  append navbar
+//  this is the function which is used when the page loads
 $(() => {
-  $('#root').append(modalTemplate)
-    .append(navbarTemplate);
+  // for convenience we create a jQuery object in which
+  //  we will be able to put the content of our pages
+  const $pageContent = $('<div class="page-content"></div>');
+
+  // instead of calling jQuery several time ($('#root')),
+  // we keep a reference of the #root
+  const $root = $('#root')
+    // we keep that outside of the page content
+    // because when we click on product details
+    // we replace its content
+    // (rather than creating the whole modal again)
+    .append(modalTemplate)
+    // the navbar stays accross the pages so
+    // we keep it outside of the page content too
+    .append(navbarTemplate)
+    // we add the $pageContent here and
+    // we will modify its own content later
+    .append($pageContent);
+
+  // the #cart element is located in the navbar
   $('#cart').click(((e) => {
     e.preventDefault();
     $('.shopping-cart').toggle('slow', (() => {
@@ -22,7 +40,8 @@ $(() => {
     .done((categories) => {
       //  populate carousel with categories
       const $carousel = mkCarousel(categories);
-      $('#root').append($carousel);
+      // we put the page element (carousel inside the $pageContent)
+      $pageContent.append($carousel);
       $carousel.carousel();
 
       //  Iterate over the categories and append to navbar
@@ -35,17 +54,21 @@ $(() => {
     })
     //  or fail trying
     .fail((xhr, status, error) => {
-      $('#root').append(`<div>Ajax Error categories: ${error}</div>`);
+      $root.append(`<div>Ajax Error categories: ${error}</div>`);
     });
+
   // ajax req and append products grid
   $.ajax('http://localhost:9090/api/products')
     .done((products) => {
-      //  append products-grid after carousel
-      $('#root').append(`<div class="infobox"><h2 id="infos">All products (${Object.keys(products).length})</h2></div>`);
-      $('#root').append('<div id="products-grid" class="container-fluid"></div>');
+      // append products-grid inside the $pageContent
+      $pageContent
+        .append(`<div class="infobox"><h2 id="infos">All products (${Object.keys(products).length})</h2></div>`)
+        .append('<div id="products-grid" class="container-fluid"></div>');
+
       //  populate products-grid with products
       $('#products-grid').append('<div class="row"></div>');
       refreshProducts(products, '-1');
+
       // click event handler on nav-links
       $('.nav-link').click((eventObj) => {
         eventObj.preventDefault();
@@ -59,7 +82,7 @@ $(() => {
     })
     //  or fail trying
     .fail((xhr, status, error) => {
-      $('#root').append(`<div>Ajax Error products: ${error}</div>`);
+      $root.append(`<div>Ajax Error products: ${error}</div>`);
     });
   // randomly select one user from the database at the beginning,
   // so that we have one user for ordering and checkout
