@@ -4,6 +4,7 @@ import 'bootstrap/js/src';
 import './styles.scss';
 import navbarTemplate from './templates/navbar.html';
 import modalTemplate from './templates/modal.html';
+import checkoutTemplate from './templates/checkout.html';
 import mkCarousel from './carousel';
 import refreshProducts from './products';
 
@@ -45,7 +46,7 @@ $(() => {
   $('.checkout-proceed').click(() => {
     $pageContent
       .empty()
-      .append('something');
+      .append(checkoutTemplate);
   });
 
   // we will trick the $pageContent to add a padding top
