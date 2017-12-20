@@ -59,14 +59,14 @@ $(() => {
       .empty()
       .append($checkout);
 
+    // we clear the .payment-methods (in which the loading text is)
+    // and keep a reference ($paymentMethods) for later access
+    const $paymentMethods = $checkout
+      .find('.payment-methods')
+      .empty();
+
     $.ajax('//localhost:9090/api/payment_methods')
       .done((data) => {
-        // we clear the .payment-methods (in which the loading text is)
-        // and keep a reference ($paymentMethods) for later access
-        const $paymentMethods = $checkout
-          .find('.payment-methods')
-          .empty();
-
         // for each payment methods returned by the API
         data.forEach((paymentMethod) => {
           // we create a jQuery object
