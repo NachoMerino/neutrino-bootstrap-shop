@@ -5,6 +5,7 @@ import './styles.scss';
 import navbarTemplate from './templates/navbar.html';
 import modalTemplate from './templates/modal.html';
 import checkoutTemplate from './templates/checkout.html';
+import paymentMethodRadioTemplate from './templates/payment-method-radio.html';
 import mkCarousel from './carousel';
 import refreshProducts from './products';
 
