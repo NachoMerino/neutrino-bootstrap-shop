@@ -54,6 +54,20 @@ $(() => {
     $checkout.find('[name="user-street"]').val(user.street);
     $checkout.find('[name="user-city"]').val(`${user.postal} ${user.city}`);
 
+    const storedProducts = JSON.parse(localStorage.getItem('cart'));
+    let total = 0;
+    const $productsList = $checkout.find('.products-list');
+    storedProducts.forEach((product) => {
+      $productsList.append(`<li>
+        <span class="product-name">${product.name}</span>
+        <span class="product-price">${product.price}€</span>
+        <span class="product-quantity">${product.quantity}</span>
+      </li>`);
+
+      total += parseInt(product.price, 10) * product.quantity;
+    });
+    $checkout.find('.cart-total').text(`Total: ${total}€`);
+
     // we put the $checkout in the page
     // (a text "Payment methods are loading" is visible)
     $pageContent
