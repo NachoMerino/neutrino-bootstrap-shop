@@ -127,6 +127,7 @@ $(() => {
         products: storedProducts,
         user: {
           id: user.id,
+          email: user.email,
           name: $checkout.find('[name="user-name"]').val(),
           street: $checkout.find('[name="user-street"]').val(),
           city: $checkout.find('[name="user-city"]').val(),
@@ -137,7 +138,7 @@ $(() => {
       $.ajax('http://localhost:9090/api/order', {
         method: 'POST',
         // the content-type of the request has to be application/json
-        // in order for the server to be able to read the body (of the request)
+        // in order for the spaerver to be able to read the body (of the request)
         contentType: 'application/json',
         data,
       })

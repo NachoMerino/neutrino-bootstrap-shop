@@ -5,6 +5,7 @@ const Router = express.Router;
 const app = express();
 const cors = require('cors');
 const mysql = require('mysql');
+const mailnotifier = require('./mailnotifier');
 
 const frontendDirectoryPath = path.resolve(__dirname, './../static');
 
@@ -126,11 +127,9 @@ apiRouter.post('/user', function(req, res, next) {
 			}
 		});
 });
-
-apiRouter.post('/order', function(req, res, next) {	
-	
+ 
+apiRouter.post('/order', function(req, res, next) {		
 	console.log('RECEIVING: ' + JSON.stringify(req.body));
-
 	con.query('insert into orders (customer_id, payment_id, created, paid) values (?, ?, now(), NULL)', [req.body.user.id, req.body.payment_method], function(err, rows) {
 			if(err) {
 				return res.json({err: err});
@@ -139,20 +138,31 @@ apiRouter.post('/order', function(req, res, next) {
 			const newOrderId = rows.insertId;
 			let sql = "insert into order_details (order_id, product_id, price) values ";
 
+			let orderValue = 0;
 			for(let i=0; i<req.body.products.length; i++) {
 				const p = req.body.products[i];
 				let values = "("+newOrderId+", "+p.id+", "+p.price+")";
 				sql += values;
-				if(i<req.body.products.length-1) {
+				if(i < req.body.products.length - 1) {
 					sql += ','
 				}
+
+				orderValue += parseInt(p.price) * parseInt(p.quantity);
 			}
+
 
 			con.query(sql, function(err, rows) {
 				if(err) {
 					return res.json({err: err});
 				}	
+				
+				// here sendMail
+				let text = `Dear ${req.body.user.name},
+							Thank you for your order of ${orderValue}.
+							We which you a nice day.
+							Your Devugees-Shop Team.`;
 
+				mailnotifier.sendMail(req.body.user.email, 'Your Order at Devugees-Shop', text);
 				return res.json({success: rows})		
 			});
 
