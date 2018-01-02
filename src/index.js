@@ -126,6 +126,7 @@ $(() => {
       const data = JSON.stringify({
         products: storedProducts,
         user: {
+          id: user.id,
           name: $checkout.find('[name="user-name"]').val(),
           street: $checkout.find('[name="user-street"]').val(),
           city: $checkout.find('[name="user-city"]').val(),

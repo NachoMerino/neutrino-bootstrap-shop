@@ -127,23 +127,44 @@ apiRouter.post('/user', function(req, res, next) {
 		});
 });
 
-apiRouter.post('/order', function(req, res, next) {
-	/* postpone to january ...
-	con.query('insert into orders (customer_id, payment_id, created, paid) values (?, ?, now(), NULL)', [req.body.customerid, req.body.payment_id], function(err, rows) {
+apiRouter.post('/order', function(req, res, next) {	
+	
+	console.log('RECEIVING: ' + JSON.stringify(req.body));
 
-		const newOrderId = rows.insertId;
-		var sql = 'insert into order_details () values ';
+	con.query('insert into orders (customer_id, payment_id, created, paid) values (?, ?, now(), NULL)', [req.body.user.id, req.body.payment_method], function(err, rows) {
+			if(err) {
+				return res.json({err: err});
+			}
 
-		res.json(rows);
-	});
-	*/
+			const newOrderId = rows.insertId;
+			let sql = "insert into order_details (order_id, product_id, price) values ";
 
+			for(let i=0; i<req.body.products.length; i++) {
+				const p = req.body.products[i];
+				let values = "("+newOrderId+", "+p.id+", "+p.price+")";
+				sql += values;
+				if(i<req.body.products.length-1) {
+					sql += ','
+				}
+			}
+
+			con.query(sql, function(err, rows) {
+				if(err) {
+					return res.json({err: err});
+				}	
+
+				return res.json({success: rows})		
+			});
+
+		});
+	/*
 	fs.writeFile(path.resolve(__dirname, './../orders/orders'+Date.now()+'.txt'), JSON.stringify(req.body),
 		(err) => {
 			if (err) return next(err);
 
 			res.json({success:'order saved'});
 		});
+	*/
 });
 
 apiRouter.put('/user/:userid', function(req, res, next) {
