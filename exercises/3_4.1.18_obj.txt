@@ -1,0 +1,72 @@
+
+
+03.01.2018
+---------------------------
+
+Intruducting authentication and credential storing methods 
+
+TASKS:
+
+# Add to the navbar a "Login" button
+
+# Use a FontAwesome icon
+
+# When the user click the login button a login form will be displayes
+
+# Add an effect to the JQ Toggle
+
+# Set the focus on the form's first input field (Username)
+
+# Implement the validation
+
+Reference:
+
+https://getbootstrap.com/docs/4.0/examples/signin/
+http://fontawesome.io/icons/
+https://api.jquery.com/focus/
+
+
+
+04.01.2018
+---------------------------
+
+SETUP:
+
+# Naming & Workflow:
+
+- guests are users not yet registerd. They can add products to cart but they'll need to signin or signup in order to checkout.
+
+- signin (login) for registered user to login. The form will be validated but then the random user from DB (Monika!) will be used.
+
+- signup (registration) for new user. The form will be validated and the user's info will be stored (localstorage).
+
+
+TASKS:
+
+# Add new button for signup process (registration) along with the signin (login): check the naming and make them consistent
+
+# Add new form for signup process (registration)
+
+# Bind an event handler to the "click" JavaScript event for each button
+
+# Toggle/Hide-Show elements: the forms and cart should not overlap each other
+
+# Inside the form add links ("Not yet" / "Already registered")
+
+# Bind an event handler to the "submit" JavaScript event for submit of login form
+
+# Create 2 other button for User-logged and Logout
+
+# Bind an event handler to the "submit" JavaScript event for submit of registration form and create a new user item in localStorage
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,70 @@
+
+
+AUTHENTICATION METHODS
+
+The user authentication market includes several types of products and services, which enable the implementation of a variety of authentication methods that aim at accompanying or removing altogether the classic password-based systems.
+
+The 3 most common authentication methods are:
+
+    Single factor authentication (through passwords)
+    Two factor authentication
+    Multi-factor authentication
+
+
+Comparation between LocalStorage, SessionStorage and Cookies
+
+    LocalStorage
+
+        Stores data with no expiration date, and gets cleared only through JavaScript, or clearing the Browser cache / Locally Stored Data
+        Storage limit is normally 10 MB
+
+    SessionStorage
+
+        The sessionStorage object stores data only for a session, meaning that the data is stored until the browser (or tab) is closed.
+        Data is never transferred to the server.
+        Storage limit is larger than a cookie (at least 5MB).
+
+    Cookie
+
+        Stores data that has to be sent back to the server with subsequent requests. Its expiration varies based on the type and the expiration duration can be set from either server-side or client-side (normally from server-side).
+        Cookies are primarily for server-side reading (can also be read on client-side), localStorage and sessionStorage can only be read on client-side.
+        Size must be less than 4KB.
+        Cookies can be made secure by setting the httpOnly flag as true for that cookie. This prevents client-side access to that cookie
+
+
+
+TEST LOCAL STORAGE
+https://arty.name/localstorage.html
+
+WEB STORAGE
+https://html.spec.whatwg.org/multipage/webstorage.html
+https://www.w3schools.com/html/html5_webstorage.asp
+
+
+REF & LIBRARIES
+
+Json WebToken
+https://jwt.io/
+
+Passport
+http://www.passportjs.org/
+
+jQuery Login with Auth0
+https://auth0.com/docs/quickstart/spa/jquery/01-login
+
+Hello.js
+https://adodson.com/hello.js/#features
+
+
+FUTURE
+
+Since mid 2016, a group of security professionals and researchers from across the industry have been working on a new way to handle authentication and proving one’s identity on the internet without the help of passwords: WebAuthn and UAF
+
+The new standard known as Web Authentication, or WebAuthn for short, is a credential management API that will be built directly into popular web browsers. It allows users to register and authenticate with web applications using an authenticator such as a phone, hardware security keys, or TPM (Trusted Platform Module) devices.
+
+https://www.w3.org/TR/webauthn/
+
+SECURITY
+
+OWASP - Authentication Cheat Sheet
+https://www.owasp.org/index.php/Authentication_Cheat_Sheet
