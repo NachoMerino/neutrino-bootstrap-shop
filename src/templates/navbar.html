@@ -19,13 +19,70 @@
   </form> -->
 
    <div class="right">
+    <ul class="user-signed-nav">
+      <li class="user-signed" id="user-signed">
+        <a href="#" id="user-signed-link" class="user"><i class="fa fa-user"></i> <span class="logged">[USERNAME]</span></a>
+      </li>
+    </ul>
+    <ul class="user-signout-nav">
+      <li class="user-signout" id="user-signout">
+        <a href="#" id="user-signout-link" class="user"><i class="fa fa-sign-out"></i> <span class="signout">Logout</span></a>
+      </li>
+    </ul>
+    <ul class="user-signin-nav">
+      <li class="user-signin" id="user-enter">
+        <a href="#" id="user-signin-link" class="user"><i class="fa fa-sign-in"></i> <span class="signin">Login</span></a>
+      </li>
+    </ul>
+    <ul class="user-signup-nav">
+      <li class="user-signup" id="user-signup">
+        <a href="#" id="user-signup-link" class="user"><i class="fa fa-user"></i> <span class="signup">Register</span></a>
+      </li>
+    </ul>
     <ul class="shopping-nav">
       <li class="cart">
         <a href="#" id="cart" class="cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge">0</span></a>
     </ul>
-    </div>
+  </div>
 </nav>
 
+<div class="user-login">
+  <div class="user-login-header">
+    <form id="form-signin" class="form-signin">
+      <h3>Sign-in</h3>
+      <label for="inputUsername" class="sr-only">Username</label>
+      <input type="text" id="inputUsername" class="form-control" placeholder="Username" required>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+      <button type="submit" class="login-proceed btn btn-dark btn-block">Login</button>
+    </form>
+    <a id="signup-link" class="signup-link" href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> Not Registered yet? Create an account!</a>
+  </div> <!--end user-login-header -->
+</div> <!--end user-login -->
+
+<div class="user-registration">
+  <div class="user-registration-header">
+    <form id="form-signup" class="form-signup">
+      <h3>Sign-up</h3>
+      <label for="inputFirstname" class="sr-only">Firstname</label>
+      <input type="text" id="inputFirstname" name="firstname" class="form-control" placeholder="Firstname" required>
+      <label for="inputLastname" class="sr-only">Lastname</label>
+      <input type="text" id="inputLastname" name="lastname" class="form-control" placeholder="Lastname" required>
+      <label for="inputBirthdate" class="sr-only">Birthdate</label>
+      <input type="date" id="inputBirthdate" name="birthdate" class="form-control" placeholder="Birthdate" required>
+      <label for="inputStreet" class="sr-only">Street</label>
+      <input type="text" id="inputUsername" name="street" class="form-control" placeholder="Street" required>
+      <label for="inputCity" class="sr-only">City</label>
+      <input type="text" id="inputCity" name="city" class="form-control" placeholder="City" required>
+      <label for="inputPostal" class="sr-only">Postal</label>
+      <input type="text" id="inputPostal" name="postal" class="form-control" placeholder="Postal" required>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required>
+      <button type="submit" class="login-proceed btn btn-dark btn-block">Register Now</button>
+    </form>
+    <a id="signup-link" class="signin-link" href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> Already Registered? Sign-in!</a>
+  </div> <!--end user-login-header -->
+</div> <!--end user-login -->
 
   <div class="shopping-cart">
     <div class="shopping-cart-header">
@@ -38,7 +95,7 @@
 
     <ul class="shopping-cart-items">
     </ul>
-
+    <div class="checkout-user-alert"><i class="fa fa-window-close" aria-hidden="true"></i> You need to be logged to proceed</div>
     <button type="button" class="checkout-proceed btn btn-dark btn-block">Checkout</button>
     <button type="button" class="btn btn-danger emptyCart btn-block">Remove all products</button>
   </div> <!--end shopping-cart -->

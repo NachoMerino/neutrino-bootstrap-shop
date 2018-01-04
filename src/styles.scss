@@ -70,11 +70,15 @@ nav {
     float: right;
   }
   ul {
+    margin: 5px;
+    display: inline;
+    padding-left:10px;
 
     li {
       display: inline;
       margin: auto auto;
       vertical-align:middle;
+      
       a {
         color: #fff;
         text-decoration: none;
@@ -90,6 +94,11 @@ nav {
 
 #products-grid {
   position:absolute;
+}
+
+.user-nav {
+  margin:0;
+  padding:0;
 }
 
 .shopping-nav {
@@ -110,7 +119,7 @@ nav {
     white-space: nowrap;
 }
 
-.shopping-cart {
+.user-login, .user-registration, .shopping-cart {
   position: fixed!important;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 16px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px;
   z-index:10;
@@ -119,7 +128,6 @@ nav {
   top:50px;
   background: white;
   width: 380px;
-  position: relative;
   border-radius: 3px;
   padding: 20px;
 
@@ -217,9 +225,50 @@ nav {
   max-height:auto;
 }
 
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signup .form-signup-heading,
+.form-signup input, .form-signin .form-signin-heading,
+.form-signin input, .login-proceed {
+  margin: 10px;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
 
+.signup-link {
+  decoration:none;
+}
 
+.cart{
+  margin-left: 5px!important;
+}
 
-
-
+.checkout-user-alert{
+  color: red;
+  margin: 15px 10px;
+}
 
