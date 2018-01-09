@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 //  import core files
 import $ from 'jquery';
 import 'bootstrap/js/src';
@@ -65,6 +67,8 @@ $(() => {
       fillPageContent(categoryId);
     });
   }
+
+  $('.loginerror').hide();
 
   //  show nav button only for logged users
   function loggedUser() {
@@ -149,6 +153,8 @@ $(() => {
     // randomly select one user from the database at the beginning,
     // so that we have one user for ordering and checkout
     localStorage.removeItem('user');
+    
+    /*
     $.ajax('http://localhost:9090/api/customers')
       .done((customers) => {
         const user = JSON.stringify(customers[Math.floor(Math.random(customers.length))]);
@@ -158,6 +164,42 @@ $(() => {
         $('.logged').text(signinUser.firstname);
         $('.user-login').toggle('slow');
       });
+    */
+
+      $.ajax({
+        url: "http://localhost:9090/api/login",
+        method: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+           email: $('#form-signin input[name=email]').val(), 
+           password: $('#form-signin input[name=password]').val()
+        })
+      })
+      .done(function(data) {
+        console.log('success', data);
+
+        // const user = JSON.stringify(customers[Math.floor(Math.random(customers.length))]);
+        // localStorage.setItem('user', user);
+        // const signinUser = JSON.parse(localStorage.getItem('user'));
+        
+        if(data.err) {
+          $('.loginerror').show();
+        }
+        else {
+          const user = data;
+          loggedUser();
+          $('.logged').text(user.firstname);
+          localStorage.setItem('user', JSON.stringify(user));
+          $('.user-login').toggle('slow');
+        }
+
+      })
+      .fail(function(xhr) {
+        console.log('error', xhr);
+      });      
+
+
   }));
 
   // click on signup button

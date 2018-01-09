@@ -6,8 +6,10 @@ const app = express();
 const cors = require('cors');
 const mysql = require('mysql');
 const mailnotifier = require('./mailnotifier');
+const jwt = require('jsonwebtoken');
 
 const frontendDirectoryPath = path.resolve(__dirname, './../static');
+const serverSignature = 'my_secret_signature';
 
 console.log('static resource at: ' + frontendDirectoryPath);
 app.use(express.static(frontendDirectoryPath));
@@ -17,18 +19,24 @@ app.use(express.json());
 // avoid hardcoded DB connection information at ALL COSTS!
 // use the following command to start your server:
 // MYSQL_PASSWORD=P455w0rd MYSQL_USER=root MYSQL_DB=x_shop npm run start-express-dev
-const {
-	MYSQL_PASSWORD = '',
-	MYSQL_USER = 'root',
-	MYSQL_DB = 'online_shop',
-} = process.env;
 
-console.info('MYSQL: user "%s", db "%s", pass length %s', MYSQL_USER, MYSQL_DB, MYSQL_PASSWORD.length);
+let shopConfigPath = process.env.HOME + '/.online-shop.json';
+let shopConfig = null;
+
+if(!fs.existsSync(shopConfigPath)) {
+	console.log('Online-Shop config file was not found. Server stops.');
+	process.exit();
+} else {
+	shopConfig = require(shopConfigPath);
+}
+
+
+console.info('MYSQL: user "%s", db "%s", pass length %s', shopConfig.mysql_usr, shopConfig.mysql_db, shopConfig.mysql_pwd.length);
 var con = mysql.createConnection({
 	host: 'localhost',
-	user: MYSQL_USER,
-	password: MYSQL_PASSWORD,
-	database: MYSQL_DB
+	user: shopConfig.mysql_usr,
+	password: shopConfig.mysql_pwd,
+	database: shopConfig.mysql_db
 });
 
 
@@ -97,7 +105,6 @@ apiRouter.put('/activate/:userid', function(req, res, next) {
 });
 
 apiRouter.post('/user', function(req, res, next) {
-
 	con.query('select * from customers where email = ?',
 		[req.body.email],
 		function(err, rows) {
@@ -128,6 +135,27 @@ apiRouter.post('/user', function(req, res, next) {
 		});
 });
  
+apiRouter.post('/login', function(req, res) {
+	console.log(req.body);
+	if(!req.body.email || !req.body.password)
+		return res.json({ err: 'username and password required'});
+
+	con.query('select * from customers where email = ? and pwd = ?', 
+		[req.body.email, req.body.password], function(err, rows) {
+		if (err) return res.json( {err: 'Internal error happened'} );
+
+		if(rows.length > 0) {
+			const token = jwt.sign({email: rows[0].email, pwd: rows[0].pwd}, serverSignature);		
+			const user = rows[0];
+			user.token = token;
+			delete user.pwd;  // do not send back the password
+			return res.json(user);
+		} else {
+			return res.json( {err: 'Username/Password does not exist'});
+		}
+	});	
+});
+
 apiRouter.post('/order', function(req, res, next) {		
 	console.log('RECEIVING: ' + JSON.stringify(req.body));
 	con.query('insert into orders (customer_id, payment_id, created, paid) values (?, ?, now(), NULL)', [req.body.user.id, req.body.payment_method], function(err, rows) {
@@ -162,7 +190,9 @@ apiRouter.post('/order', function(req, res, next) {
 							We which you a nice day.
 							Your Devugees-Shop Team.`;
 
+				if(shopConfig.mailnotifications === "1") {
 				mailnotifier.sendMail(req.body.user.email, 'Your Order at Devugees-Shop', text);
+				}
 				return res.json({success: rows})		
 			});
 
