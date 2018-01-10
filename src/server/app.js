@@ -136,24 +136,28 @@ apiRouter.post('/user', function(req, res, next) {
 });
  
 apiRouter.post('/login', function(req, res) {
-	console.log(req.body);
-	if(!req.body.email || !req.body.password)
-		return res.json({ err: 'username and password required'});
+  console.log(req.body);
+  if(!req.body.email || !req.body.password)
+    return res.json({ err: 'username and password required'});
 
-	con.query('select * from customers where email = ? and pwd = ?', 
-		[req.body.email, req.body.password], function(err, rows) {
-		if (err) return res.json( {err: 'Internal error happened'} );
-
-		if(rows.length > 0) {
-			const token = jwt.sign({email: rows[0].email, pwd: rows[0].pwd}, serverSignature);		
-			const user = rows[0];
-			user.token = token;
-			delete user.pwd;  // do not send back the password
-			return res.json(user);
-		} else {
-			return res.json( {err: 'Username/Password does not exist'});
-		}
-	});	
+  con.query('select * from customers where email = ?', 
+    [req.body.email], function(err, rows) {
+    if (err) return res.json( {err: 'Internal error happened'} );
+    var bcrypt = require('bcryptjs');
+    if(rows.length > 0 && bcrypt.compareSync(rows[0].pwd, req.body.password)){
+      console.log("auth ok");
+      if(rows.length > 0) {
+        const token = jwt.sign({email: rows[0].email, pwd: rows[0].pwd}, serverSignature);    
+        const user = rows[0];
+        user.token = token;
+        delete user.pwd;  // do not send back the password
+        return res.json(user);
+      }
+    }else{
+      console.log("ERROR: password don't match");
+      return res.json( {err: 'Username does not exist'});
+    }
+  }); 
 });
 
 apiRouter.post('/order', function(req, res, next) {		

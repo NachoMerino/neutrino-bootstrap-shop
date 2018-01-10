@@ -1,0 +1,118 @@
+10.01.2018
+
+HASHING BASICS & PASSWORDS
+---------------------------
+
+Hashing and encrypting are two words that are often used interchangeably, but incorrectly so.
+
+Hashing - What is it?
+
+A hash is a string or number generated from a string of text. The resulting string or number is a fixed length, and will vary widely with small variations in input. The best hashing algorithms are designed so that it's impossible to turn a hash back into its original string.
+
+Popular Algorithms
+
+    MD5 - MD5 is the most widely known hashing function. It produces a 16-byte hash value, usually expressed as a 32 digit headecimal number. Recently a few vulnerabilities have been discovered in MD5, and rainbow tables have been published which allow people to reverse MD5 hashes made without good salts.
+
+    SHA - There are three different SHA algorithms -- SHA-0, SHA-1, and SHA-2. SHA-0 is very rarely used, as it has contained an error which was fixed with SHA-1. SHA-1 is the most commonly used SHA algorithm, and produces a 20-byte hash value.
+    SHA-2 consists of a set of 6 hashing algorithms, and is considered the strongest. SHA-256 or above is recommended for situations where security is vital. SHA-256 produces 32-byte hash values.
+    
+When Should Hashing Be Used?
+
+    Hashing is an ideal way to store passwords, as hashes are inherently one-way in their nature. By storing passwords in hash format, it's very difficult for someone with access to the raw data to reverse it (assuming a strong hashing algorithm and appropriate salt has been used to generate it).
+
+    When storing a password, hash it with a salt, and then with any future login attempts, hash the password the user enters and compare it with the stored hash. If the two match up, then it's virtually certain that the user entering the password entered the right one.
+
+    Hashing is great for usage in any instance where you want to compare a value with a stored value, but can't store its plain representation for security reasons. Other use cases could be checking the last few digits of a credit card match up with user input or comparing the hash of a file you have with the hash of it stored in a database to make sure that they're both the same. 
+
+
+Why You Should Hash
+
+    All passwords should be hashed before entering a database because you have to consider the scenario where some malicious user attempts to gain entry into your database. Passwords are sensitive pieces of information that you don't want people to see.
+
+    Now let's not confuse encryption with hashing. Encrypting something assumes it can later be decrypted. Although this is better than leaving as plain text, what we really want is something that cannot be decrypted. This is what hashing offers us.
+
+    Rainbow Table
+    A rainbow table is built by calculating the hash values of commonly used words and their combinations.
+    Remember that a Rainbow Table may be created from scratch, after the database has been stolen.
+
+Encryption - What is it?
+
+    Encryption turns data into a series of unreadable characters, that aren't of a fixed length. The key difference between encryption and hashing is that encrypted strings can be reversed back into their original decrypted form if you have the right key.
+
+    There are two primary types of encryption, symmetric key encryption and public key encryption. In symmetric key encryption, the key to both encrypt and decrypt is exactly the same. This is what most people think of when they think of encryption.
+
+    Public key encryption by comparison has two different keys, one used to encrypt the string (the public key) and one used to decrypt it (the private key). The public key is is made available for anyone to use to encrypt messages, however only the intended recipient has access to the private key, and therefore the ability to decrypt messages.
+
+When Should Encryption Be Used?
+
+    Encryption should only ever be used over hashing when it is a necessity to decrypt the resulting message. For example, if you were trying to send secure messages to someone on the other side of the world, you would need to use encryption rather than hashing, as the message is no use to the receiver if they cannot decrypt it.
+
+
+--------
+
+Storing User Passwords Securely: hashing, salting, and Bcrypt: we'll talk about the theory for how to store user passwords securely, as well as some example code using a Bcrypt library. 
+
+Bad Solution #1: plain text password
+Bad Solution #2: sha1(password)
+Bad Solution #3: sha1(FIXED_SALT + password)
+Bad Solution #4: sha1(PER_USER_SALT + password)
+Good Solution: bcrypt(password)
+
+Reference:
+
+http://dustwell.com/how-to-handle-passwords-bcrypt.html
+
+
+--------
+
+
+
+BCRYPT NPM PACKAGES
+https://www.npmjs.com/package/bcrypt
+https://www.npmjs.com/package/bcryptjs <<--- Works with Webpack ;)
+
+
+Installing the Package
+
+npm install bcrypt-nodejs or yarn add bcrypt-nodejs
+
+Synchronous
+
+var hash = bcrypt.hashSync("bacon");
+
+bcrypt.compareSync("bacon", hash); // true
+bcrypt.compareSync("veggies", hash); // false
+
+Asynchronous
+
+bcrypt.hash("bacon", null, null, function(err, hash) {
+  // Store hash in your password DB.
+});
+
+// Load hash from your password DB.
+bcrypt.compare("bacon", hash, function(err, res) {
+    // res == true
+});
+bcrypt.compare("veggies", hash, function(err, res) {
+    // res = false
+});
+
+
+
+Reference:
+https://www.npmjs.com/package/bcryptjs
+https://www.abeautifulsite.net/hashing-passwords-with-nodejs-and-bcrypt
+
+
+--------
+
+
+FUN FUN HASH
+Play around with Bcrypt HASH
+https://www.dailycred.com/article/bcrypt-calculator
+
+
+
+
+
+
